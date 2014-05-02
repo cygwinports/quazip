@@ -1,0 +1,43 @@
+inherit qt4-qmake qt4-cmake
+
+NAME="quazip"
+VERSION=0.6.2
+RELEASE=1
+CATEGORY="Libs"
+SUMMARY="Qt4 ZIP file library"
+DESCRIPTION="QuaZIP is a simple C++/Qt wrapper over the Zlib library that can
+be used to access ZIP archives."
+HOMEPAGE="http://quazip.sourceforge.net/"
+SRC_URI="mirror://sourceforge/quazip/quazip-${VERSION}.tar.gz"
+PATCH_URI="0.6.2-cmake-install.patch"
+
+src_compile() {
+	cd ${B}
+	qt4_cmake_compile -DBUILD_WITH_QT4=ON
+
+	cd ${B}
+	sed -e "s| quazip/| ${S}/quazip/|g" -e "s| qztest/| ${S}/qztest/|" -e "/^INPUT /s|$|${S}/quazip|" ${S}/Doxyfile > Doxyfile
+	doxygen Doxyfile
+}
+
+src_test() {
+	mkdir -p ${B}/qztest
+	cd ${B}/qztest
+	cygqmake4 ${S}/qztest
+	cygmake
+	PATH="${B}/quazip:$PATH" ./qztest
+}
+
+src_install() {
+	cd ${B}
+	cyginstall
+
+	dodoc doc/html
+}
+
+PKG_NAMES="libquazip1 libquazip-devel libquazip-doc"
+libquazip1_CONTENTS="--exclude=html usr/bin/cygquazip-1.dll usr/share/doc/"
+libquazip_devel_REQUIRES="libQtCore4-devel zlib-devel"
+libquazip_devel_CONTENTS="usr/include/quazip/ usr/lib/cmake/QuaZip/ usr/lib/libquazip.dll.a"
+libquazip_doc_CATEGORY="Doc"
+libquazip_doc_CONTENTS="usr/share/doc/${NAME}/html/"

@@ -1,0 +1,16 @@
+--- origsrc/quazip-0.6.2/CMakeLists.txt	2013-11-18 11:37:54.000000000 -0600
++++ src/quazip-0.6.2/CMakeLists.txt	2014-05-02 01:39:04.103717600 -0500
+@@ -51,4 +51,4 @@ set(LIB_DESTINATION "${CMAKE_INSTALL_PRE
+ 
+ add_subdirectory(quazip)
+ 
+-install(FILES FindQuaZip.cmake DESTINATION ${CMAKE_ROOT}/Modules)
++install(FILES FindQuaZip.cmake DESTINATION ${LIB_DESTINATION}/cmake/QuaZip)
+--- origsrc/quazip-0.6.2/quazip/CMakeLists.txt	2013-08-10 11:00:00.000000000 -0500
++++ src/quazip-0.6.2/quazip/CMakeLists.txt	2014-05-02 01:33:02.802338100 -0500
+@@ -20,4 +20,4 @@ set_target_properties(quazip PROPERTIES
+ target_link_libraries(quazip ${QT_QTMAIN_LIBRARY} ${QT_QTCORE_LIBRARY} ${ZLIB_LIBRARIES})
+ 
+ install(FILES ${PUBLIC_HEADERS} DESTINATION include/quazip)
+-install(TARGETS quazip LIBRARY DESTINATION ${LIB_DESTINATION} ARCHIVE DESTINATION ${LIB_DESTINATION} RUNTIME DESTINATION ${LIB_DESTINATION})
++install(TARGETS quazip LIBRARY DESTINATION ${LIB_DESTINATION} ARCHIVE DESTINATION ${LIB_DESTINATION} RUNTIME DESTINATION bin)
